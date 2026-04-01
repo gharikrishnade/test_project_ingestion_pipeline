@@ -1,0 +1,126 @@
+{
+  "name": "pipeline_dim_customers",
+  "properties": {
+    "description": "DataAutomation generated pipeline \u2014 dimension: dw.dim_customers",
+    "activities": [
+      {
+        "name": "Copy_dim_customers",
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "SqlServerSource",
+            "sqlReaderQuery": "SELECT FirstName, LastName, Email, Phone, Country, CreatedAt, IsActive FROM [dbo].[Customers]",
+            "queryTimeout": "02:00:00"
+          },
+          "sink": {
+            "type": "AzureSqlSink",
+            "preCopyScript": "TRUNCATE TABLE [dw].[dim_customers]",
+            "writeBehavior": "insert",
+            "sqlWriterUseTableLock": false
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": {
+                  "name": "FirstName",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "firstname",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "LastName",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "lastname",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "Email",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "email",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "Phone",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "phone",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "Country",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "country",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "CreatedAt",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "createdat",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "name": "IsActive",
+                  "type": "String"
+                },
+                "sink": {
+                  "name": "isactive",
+                  "type": "String"
+                }
+              }
+            ]
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "DS_Source_Customers",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "DS_Target_dim_customers",
+            "type": "DatasetReference"
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "sourceSchema": {
+        "type": "String",
+        "defaultValue": "dbo"
+      },
+      "targetSchema": {
+        "type": "String",
+        "defaultValue": "dw"
+      }
+    },
+    "annotations": [
+      "table_role:dimension",
+      "generated_by:DataAutomation"
+    ]
+  }
+}
